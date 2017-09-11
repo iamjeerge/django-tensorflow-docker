@@ -85,22 +85,24 @@ RUN pip --no-cache-dir install \
 # RUN ln -s /usr/bin/python3 /usr/bin/python#
 
 # Set up our notebook config.
-# COPY jupyter_notebook_config.py /root/.jupyter/
+COPY jupyter_notebook_config.py /root/.jupyter/
 
 # Copy sample notebooks.
-# COPY notebooks /notebooks
+COPY notebooks /notebooks
 
 # Jupyter has issues with being run directly:
 #   https://github.com/ipython/ipython/issues/7062
 # We just add a little wrapper script.
-# COPY run_jupyter.sh /
+COPY run_jupyter.sh /
 
 # TensorBoard
-# EXPOSE 6006
+EXPOSE 6006
 # IPython
-# EXPOSE 8888
+EXPOSE 8888
 
-# WORKDIR "/notebooks"
+WORKDIR "/notebooks"
+
+CMD ["/run_jupyter.sh", "--allow-root"]
 
 # Clean up APT and bundler when done.
 RUN rm -rf /usr/share/doc \
@@ -118,10 +120,6 @@ RUN apt-get autoclean
 RUN apt-get autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install bundle of gems
-RUN mkdir -p $APP_HOME
-WORKDIR $APP_HOME
 
 CMD ["tail", "-f", "/dev/null"]
-
 CMD ["/run_jupyter.sh", "--allow-root"]
