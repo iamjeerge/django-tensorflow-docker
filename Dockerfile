@@ -36,7 +36,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgraphviz-dev \
         python-pydot \
         default-jre \
-        default-jdk
+        default-jdk \
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
